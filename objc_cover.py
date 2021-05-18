@@ -61,8 +61,8 @@ def implemented_methods(path):
     re_sig_sel_mac = re.compile("\s*imp ([+|-]\[.+\s(.+)\])")
     
     impl = {} # sel -> clsmtd
-    
-    for line in os.popen("/usr/bin/otool -oV %s" % path).xreadlines():
+        
+    for line in os.popen("/usr/bin/otool -oV %s" % path).readlines():
         results = re_sig_sel_ios.findall(line)
         if not results:
             results = re_sig_sel_mac.findall(line)
@@ -98,7 +98,7 @@ def potentially_unreferenced_methods():
     implemented = implemented_methods(path)
     
     if not implemented:
-        print "# can't find implemented methods"
+        print("# can't find implemented methods")
         sys.exit(1)
     
     referenced = referenced_selectors(path)
@@ -121,11 +121,11 @@ if __name__ == "__main__":
     
     path = verified_macho_path(sys.argv)
     if not path:
-        print "Usage: %s MACH_O_FILE" % sys.argv[0]
+        print("Usage: %s MACH_O_FILE" % sys.argv[0])
         sys.exit(1)
     
     methods = potentially_unreferenced_methods()
         
-    print "# the following methods may be unreferenced"
+    print("# the following methods may be unreferenced")
     for m in methods:
-        print m
+        print(m)
